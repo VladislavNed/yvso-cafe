@@ -1,8 +1,8 @@
-import type { Booking } from '../types/booking';
+import type { Booking } from "../types/booking";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const LOCAL_STORAGE_KEY = 'restaurant_bookings';
+const LOCAL_STORAGE_KEY = "restaurant_bookings";
 
 const getLocalData = (): Booking[] => {
   const data = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -14,7 +14,6 @@ const saveLocalData = (data: Booking[]) => {
 };
 
 export const bookingService = {
-  
   getBookings: async (): Promise<Booking[]> => {
     await delay(500);
     return getLocalData();
@@ -26,10 +25,12 @@ export const bookingService = {
     return bookings.find((b) => b.id === id);
   },
 
-  createBooking: async (newBooking: Omit<Booking, 'id' | 'createdAt' | 'updatedAt'>): Promise<Booking> => {
+  createBooking: async (
+    newBooking: Omit<Booking, "id" | "createdAt" | "updatedAt">,
+  ): Promise<Booking> => {
     await delay(500);
     const bookings = getLocalData();
-    
+
     const fullBooking: Booking = {
       ...newBooking,
       id: Date.now().toString(),
@@ -42,13 +43,16 @@ export const bookingService = {
     return fullBooking;
   },
 
-  updateBooking: async (id: string, updatedFields: Partial<Booking>): Promise<Booking> => {
+  updateBooking: async (
+    id: string,
+    updatedFields: Partial<Booking>,
+  ): Promise<Booking> => {
     await delay(500);
     const bookings = getLocalData();
     const index = bookings.findIndex((b) => b.id === id);
 
     if (index === -1) {
-      throw new Error('Бронирование не найдено на сервере');
+      throw new Error("Бронирование не найдено на сервере");
     }
 
     const updatedBooking: Booking = {
@@ -66,8 +70,8 @@ export const bookingService = {
     await delay(400);
     const bookings = getLocalData();
     const filtered = bookings.filter((b) => b.id !== id);
-    
+
     saveLocalData(filtered);
     return true;
-  }
+  },
 };
