@@ -1,4 +1,4 @@
-import { Booking } from '../types/booking';
+import type { Booking } from '../types/booking';
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 

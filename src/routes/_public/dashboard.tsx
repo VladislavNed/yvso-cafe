@@ -1,10 +1,11 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createFileRoute } from '@tanstack/react-router'
+import Dashboard from '../../components/olha/Dashboard'
 
-export const Route = createFileRoute('/_protected/reservation')({
+export const Route = createFileRoute('/_public/dashboard')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  return <div>Hello "/_protected/reservation"!</div>
+  return <div><Dashboard/></div>
 }
