@@ -19,8 +19,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('cafe-theme', theme);
     // Add the class for Tailwind if the project uses dark mode classes.
     const root = window.document.documentElement;
-    if (theme === 'dark') root.classList.add('dark');
-    else root.classList.remove('dark');
+    root.classList.toggle('dark', theme === 'dark');
   }, [theme]);
 
   const toggleTheme = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');

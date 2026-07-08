@@ -1,6 +1,7 @@
 // src/components/olha/dashboardHelpers.ts
 import type { Booking } from '../../types/booking';
-import type { BookingFilters, BookingStatus } from './types';
+import { bookingCategories, type BookingFilters } from './types';
+import type { BookingStatus } from '../../types/booking';
 
 export const getTotalReservations = (data: Booking[]) => data.length;
 
@@ -33,7 +34,8 @@ export const getExpectedRevenue = (data: Booking[]) => {
 };
 
 export const getCategories = (data: Booking[]) => {
-  return Array.from(new Set(data.map((booking) => booking.category))).sort((a, b) => a.localeCompare(b, 'de'));
+  const usedCategories = new Set(data.map((booking) => booking.category));
+  return bookingCategories.filter((category) => usedCategories.has(category) || data.length === 0);
 };
 
 export const filterAndSortBookings = (data: Booking[], filters: BookingFilters) => {

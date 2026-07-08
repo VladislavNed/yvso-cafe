@@ -2,9 +2,9 @@
 
 export default function EmptyState() {
   return (
-    <div className="p-8 text-center border-2 border-dashed border-gray-200 rounded-xl">
-      <p className="text-gray-500 font-medium">Keine Ergebnisse gefunden.</p>
-      <p className="text-sm text-gray-400 mt-1">Bitte ändern Sie die Filter oder erstellen Sie eine neue Reservierung.</p>
+    <div className="rounded-xl border-2 border-dashed border-gray-200 p-8 text-center dark:border-gray-700">
+      <p className="font-medium text-gray-500 dark:text-gray-300">Keine Ergebnisse gefunden.</p>
+      <p className="mt-1 text-sm text-gray-400 dark:text-gray-500">Bitte ändern Sie die Filter oder erstellen Sie eine neue Reservierung.</p>
     </div>
   );
 }

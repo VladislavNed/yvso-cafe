@@ -1,11 +1,12 @@
 // src/components/olha/ItemFilters.tsx
 import type { ChangeEvent } from 'react';
+import type { BookingCategory } from '../../types/booking';
 import type { BookingFilters, BookingSortOption } from './types';
-import { statusLabels } from './types';
+import { categoryLabels, statusLabels } from './types';
 
 type ItemFiltersProps = {
   filters: BookingFilters;
-  categories: string[];
+  categories: BookingCategory[];
   onChange: (filters: BookingFilters) => void;
   onReset: () => void;
 };
@@ -25,11 +26,11 @@ export default function ItemFilters({ filters, categories, onChange, onReset }: 
   }
 
   return (
-    <section className="grid grid-cols-1 gap-4 rounded-xl border border-gray-100 bg-white p-4 shadow-sm md:grid-cols-2 lg:grid-cols-5">
+    <section className="grid grid-cols-1 gap-4 rounded-xl border border-gray-100 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-gray-900 md:grid-cols-2 lg:grid-cols-5">
       <label className="flex flex-col gap-1 lg:col-span-2">
-        <span className="text-sm font-medium text-gray-700">Suche</span>
+        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Suche</span>
         <input
-          className="rounded-lg border border-gray-200 px-3 py-2"
+          className="rounded-lg border border-gray-200 px-3 py-2 dark:border-gray-700 dark:bg-gray-950 dark:text-gray-100"
           type="search"
           value={filters.search}
           placeholder="Nach Titel oder Gast suchen"
@@ -38,25 +39,27 @@ export default function ItemFilters({ filters, categories, onChange, onReset }: 
       </label>
 
       <label className="flex flex-col gap-1">
-        <span className="text-sm font-medium text-gray-700">Kategorie</span>
+        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Kategorie</span>
         <select
-          className="rounded-lg border border-gray-200 px-3 py-2"
+          className="rounded-lg border border-gray-200 px-3 py-2 dark:border-gray-700 dark:bg-gray-950 dark:text-gray-100"
           value={filters.category}
-          onChange={(event: ChangeEvent<HTMLSelectElement>) => updateFilter('category', event.target.value)}
+          onChange={(event: ChangeEvent<HTMLSelectElement>) =>
+            updateFilter('category', event.target.value as BookingFilters['category'])
+          }
         >
           <option value="all">Alle Kategorien</option>
           {categories.map((category) => (
             <option key={category} value={category}>
-              {category}
+              {categoryLabels[category]}
             </option>
           ))}
         </select>
       </label>
 
       <label className="flex flex-col gap-1">
-        <span className="text-sm font-medium text-gray-700">Status</span>
+        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Status</span>
         <select
-          className="rounded-lg border border-gray-200 px-3 py-2"
+          className="rounded-lg border border-gray-200 px-3 py-2 dark:border-gray-700 dark:bg-gray-950 dark:text-gray-100"
           value={filters.status}
           onChange={(event: ChangeEvent<HTMLSelectElement>) =>
             updateFilter('status', event.target.value as BookingFilters['status'])
@@ -72,9 +75,9 @@ export default function ItemFilters({ filters, categories, onChange, onReset }: 
       </label>
 
       <label className="flex flex-col gap-1">
-        <span className="text-sm font-medium text-gray-700">Sortierung</span>
+        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Sortierung</span>
         <select
-          className="rounded-lg border border-gray-200 px-3 py-2"
+          className="rounded-lg border border-gray-200 px-3 py-2 dark:border-gray-700 dark:bg-gray-950 dark:text-gray-100"
           value={filters.sort}
           onChange={(event: ChangeEvent<HTMLSelectElement>) =>
             updateFilter('sort', event.target.value as BookingSortOption)
@@ -89,7 +92,7 @@ export default function ItemFilters({ filters, categories, onChange, onReset }: 
       </label>
 
       <button
-        className="rounded-lg bg-gray-100 px-4 py-2 text-sm font-semibold text-gray-700 md:col-span-2 lg:col-span-1"
+        className="rounded-lg bg-gray-100 px-4 py-2 text-sm font-semibold text-gray-700 dark:bg-gray-800 dark:text-gray-100 md:col-span-2 lg:col-span-1"
         type="button"
         onClick={onReset}
       >
