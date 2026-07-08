@@ -9,68 +9,86 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AboutRouteImport } from './routes/about'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as PublicIndexRouteImport } from './routes/_public/index'
+import { Route as PublicAboutRouteImport } from './routes/_public/about'
+import { Route as ProtectedReservationRouteImport } from './routes/_protected/reservation'
 
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
+const PublicIndexRoute = PublicIndexRouteImport.update({
+  id: '/_public/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PublicAboutRoute = PublicAboutRouteImport.update({
+  id: '/_public/about',
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const ProtectedReservationRoute = ProtectedReservationRouteImport.update({
+  id: '/_protected/reservation',
+  path: '/reservation',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/reservation': typeof ProtectedReservationRoute
+  '/about': typeof PublicAboutRoute
+  '/': typeof PublicIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/reservation': typeof ProtectedReservationRoute
+  '/about': typeof PublicAboutRoute
+  '/': typeof PublicIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/_protected/reservation': typeof ProtectedReservationRoute
+  '/_public/about': typeof PublicAboutRoute
+  '/_public/': typeof PublicIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about'
+  fullPaths: '/reservation' | '/about' | '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about'
-  id: '__root__' | '/' | '/about'
+  to: '/reservation' | '/about' | '/'
+  id: '__root__' | '/_protected/reservation' | '/_public/about' | '/_public/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
+  ProtectedReservationRoute: typeof ProtectedReservationRoute
+  PublicAboutRoute: typeof PublicAboutRoute
+  PublicIndexRoute: typeof PublicIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
+    '/_public/': {
+      id: '/_public/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+      preLoaderRoute: typeof PublicIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_public/about': {
+      id: '/_public/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof PublicAboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_protected/reservation': {
+      id: '/_protected/reservation'
+      path: '/reservation'
+      fullPath: '/reservation'
+      preLoaderRoute: typeof ProtectedReservationRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
+  ProtectedReservationRoute: ProtectedReservationRoute,
+  PublicAboutRoute: PublicAboutRoute,
+  PublicIndexRoute: PublicIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
