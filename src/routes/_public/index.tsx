@@ -1,4 +1,6 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createFileRoute } from "@tanstack/react-router";
+import Dashboard from "../../components/olha/Dashboard";
 import "../../index.css";
 
 export const Route = createFileRoute("/_public/")({
@@ -6,9 +8,5 @@ export const Route = createFileRoute("/_public/")({
 });
 
 function Index() {
-  return (
-    <div className="p-2">
-      <h3>Welcome Home!</h3>
-    </div>
-  );
+  return <Dashboard />;
 }

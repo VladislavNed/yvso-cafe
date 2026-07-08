@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PublicIndexRouteImport } from './routes/_public/index'
+import { Route as PublicDashboardRouteImport } from './routes/_public/dashboard'
 import { Route as PublicAboutRouteImport } from './routes/_public/about'
 import { Route as ProtectedReservationRouteImport } from './routes/_protected/reservation'
 
 const PublicIndexRoute = PublicIndexRouteImport.update({
   id: '/_public/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PublicDashboardRoute = PublicDashboardRouteImport.update({
+  id: '/_public/dashboard',
+  path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PublicAboutRoute = PublicAboutRouteImport.update({
@@ -32,30 +38,39 @@ const ProtectedReservationRoute = ProtectedReservationRouteImport.update({
 export interface FileRoutesByFullPath {
   '/reservation': typeof ProtectedReservationRoute
   '/about': typeof PublicAboutRoute
+  '/dashboard': typeof PublicDashboardRoute
   '/': typeof PublicIndexRoute
 }
 export interface FileRoutesByTo {
   '/reservation': typeof ProtectedReservationRoute
   '/about': typeof PublicAboutRoute
+  '/dashboard': typeof PublicDashboardRoute
   '/': typeof PublicIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_protected/reservation': typeof ProtectedReservationRoute
   '/_public/about': typeof PublicAboutRoute
+  '/_public/dashboard': typeof PublicDashboardRoute
   '/_public/': typeof PublicIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/reservation' | '/about' | '/'
+  fullPaths: '/reservation' | '/about' | '/dashboard' | '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/reservation' | '/about' | '/'
-  id: '__root__' | '/_protected/reservation' | '/_public/about' | '/_public/'
+  to: '/reservation' | '/about' | '/dashboard' | '/'
+  id:
+    | '__root__'
+    | '/_protected/reservation'
+    | '/_public/about'
+    | '/_public/dashboard'
+    | '/_public/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   ProtectedReservationRoute: typeof ProtectedReservationRoute
   PublicAboutRoute: typeof PublicAboutRoute
+  PublicDashboardRoute: typeof PublicDashboardRoute
   PublicIndexRoute: typeof PublicIndexRoute
 }
 
@@ -66,6 +81,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof PublicIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_public/dashboard': {
+      id: '/_public/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof PublicDashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_public/about': {
@@ -88,6 +110,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   ProtectedReservationRoute: ProtectedReservationRoute,
   PublicAboutRoute: PublicAboutRoute,
+  PublicDashboardRoute: PublicDashboardRoute,
   PublicIndexRoute: PublicIndexRoute,
 }
 export const routeTree = rootRouteImport
