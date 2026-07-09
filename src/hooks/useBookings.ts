@@ -1,8 +1,8 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { bookingService } from '../services/bookingService';
-import { Booking } from '../types/booking';
- 
-const QUERY_KEY = ['bookings'];
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { bookingService } from "../services/bookingService";
+import type { Booking } from "../types/booking";
+
+const QUERY_KEY = ["bookings"];
 
 export const useBookings = () => {
   const queryClient = useQueryClient();
@@ -16,7 +16,7 @@ export const useBookings = () => {
 
   const useGetOne = (id: string) => {
     return useQuery({
-      queryKey: ['booking', id],
+      queryKey: ["booking", id],
       queryFn: () => bookingService.getBookingById(id),
       enabled: !!id,
     });
@@ -24,7 +24,7 @@ export const useBookings = () => {
 
   const useCreate = () => {
     return useMutation({
-      mutationFn: (data: Omit<Booking, 'id' | 'createdAt' | 'updatedAt'>) => 
+      mutationFn: (data: Omit<Booking, "id" | "createdAt" | "updatedAt">) =>
         bookingService.createBooking(data),
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: QUERY_KEY });
@@ -34,11 +34,11 @@ export const useBookings = () => {
 
   const useUpdate = (id: string) => {
     return useMutation({
-      mutationFn: (data: Partial<Booking>) => 
+      mutationFn: (data: Partial<Booking>) =>
         bookingService.updateBooking(id, data),
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: QUERY_KEY });
-        queryClient.invalidateQueries({ queryKey: ['booking', id] });
+        queryClient.invalidateQueries({ queryKey: ["booking", id] });
       },
     });
   };

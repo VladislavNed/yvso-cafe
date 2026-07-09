@@ -3,7 +3,7 @@ export interface Booking {
   title: string;
   description: string;
   category: string;
-  status: 'planned' | 'active' | 'completed';
+  status: "planned" | "active" | "completed";
   createdAt: string;
   updatedAt: string;
 

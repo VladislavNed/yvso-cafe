@@ -9,68 +9,198 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AboutRouteImport } from './routes/about'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as PublicIndexRouteImport } from './routes/_public/index'
+import { Route as PublicDashboardRouteImport } from './routes/_public/dashboard'
+import { Route as PublicAboutRouteImport } from './routes/_public/about'
+import { Route as ProtectedReservationsIndexRouteImport } from './routes/_protected/reservations.index'
+import { Route as ProtectedReservationsNewRouteImport } from './routes/_protected/reservations.new'
+import { Route as ProtectedReservationsReservationIdRouteImport } from './routes/_protected/reservations.$reservationId'
+import { Route as ProtectedReservationsReservationIdEditRouteImport } from './routes/_protected/reservations.$reservationId.edit'
 
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
+const PublicIndexRoute = PublicIndexRouteImport.update({
+  id: '/_public/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PublicDashboardRoute = PublicDashboardRouteImport.update({
+  id: '/_public/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PublicAboutRoute = PublicAboutRouteImport.update({
+  id: '/_public/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProtectedReservationsIndexRoute =
+  ProtectedReservationsIndexRouteImport.update({
+    id: '/_protected/reservations/',
+    path: '/reservations/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ProtectedReservationsNewRoute =
+  ProtectedReservationsNewRouteImport.update({
+    id: '/_protected/reservations/new',
+    path: '/reservations/new',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ProtectedReservationsReservationIdRoute =
+  ProtectedReservationsReservationIdRouteImport.update({
+    id: '/_protected/reservations/$reservationId',
+    path: '/reservations/$reservationId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ProtectedReservationsReservationIdEditRoute =
+  ProtectedReservationsReservationIdEditRouteImport.update({
+    id: '/edit',
+    path: '/edit',
+    getParentRoute: () => ProtectedReservationsReservationIdRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/about': typeof PublicAboutRoute
+  '/dashboard': typeof PublicDashboardRoute
+  '/': typeof PublicIndexRoute
+  '/reservations/$reservationId': typeof ProtectedReservationsReservationIdRouteWithChildren
+  '/reservations/new': typeof ProtectedReservationsNewRoute
+  '/reservations/': typeof ProtectedReservationsIndexRoute
+  '/reservations/$reservationId/edit': typeof ProtectedReservationsReservationIdEditRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/about': typeof PublicAboutRoute
+  '/dashboard': typeof PublicDashboardRoute
+  '/': typeof PublicIndexRoute
+  '/reservations/$reservationId': typeof ProtectedReservationsReservationIdRouteWithChildren
+  '/reservations/new': typeof ProtectedReservationsNewRoute
+  '/reservations': typeof ProtectedReservationsIndexRoute
+  '/reservations/$reservationId/edit': typeof ProtectedReservationsReservationIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/_public/about': typeof PublicAboutRoute
+  '/_public/dashboard': typeof PublicDashboardRoute
+  '/_public/': typeof PublicIndexRoute
+  '/_protected/reservations/$reservationId': typeof ProtectedReservationsReservationIdRouteWithChildren
+  '/_protected/reservations/new': typeof ProtectedReservationsNewRoute
+  '/_protected/reservations/': typeof ProtectedReservationsIndexRoute
+  '/_protected/reservations/$reservationId/edit': typeof ProtectedReservationsReservationIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about'
+  fullPaths:
+    | '/about'
+    | '/dashboard'
+    | '/'
+    | '/reservations/$reservationId'
+    | '/reservations/new'
+    | '/reservations/'
+    | '/reservations/$reservationId/edit'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about'
-  id: '__root__' | '/' | '/about'
+  to:
+    | '/about'
+    | '/dashboard'
+    | '/'
+    | '/reservations/$reservationId'
+    | '/reservations/new'
+    | '/reservations'
+    | '/reservations/$reservationId/edit'
+  id:
+    | '__root__'
+    | '/_public/about'
+    | '/_public/dashboard'
+    | '/_public/'
+    | '/_protected/reservations/$reservationId'
+    | '/_protected/reservations/new'
+    | '/_protected/reservations/'
+    | '/_protected/reservations/$reservationId/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
+  PublicAboutRoute: typeof PublicAboutRoute
+  PublicDashboardRoute: typeof PublicDashboardRoute
+  PublicIndexRoute: typeof PublicIndexRoute
+  ProtectedReservationsReservationIdRoute: typeof ProtectedReservationsReservationIdRouteWithChildren
+  ProtectedReservationsNewRoute: typeof ProtectedReservationsNewRoute
+  ProtectedReservationsIndexRoute: typeof ProtectedReservationsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
+    '/_public/': {
+      id: '/_public/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+      preLoaderRoute: typeof PublicIndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_public/dashboard': {
+      id: '/_public/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof PublicDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_public/about': {
+      id: '/_public/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof PublicAboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_protected/reservations/': {
+      id: '/_protected/reservations/'
+      path: '/reservations'
+      fullPath: '/reservations/'
+      preLoaderRoute: typeof ProtectedReservationsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_protected/reservations/new': {
+      id: '/_protected/reservations/new'
+      path: '/reservations/new'
+      fullPath: '/reservations/new'
+      preLoaderRoute: typeof ProtectedReservationsNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_protected/reservations/$reservationId': {
+      id: '/_protected/reservations/$reservationId'
+      path: '/reservations/$reservationId'
+      fullPath: '/reservations/$reservationId'
+      preLoaderRoute: typeof ProtectedReservationsReservationIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_protected/reservations/$reservationId/edit': {
+      id: '/_protected/reservations/$reservationId/edit'
+      path: '/edit'
+      fullPath: '/reservations/$reservationId/edit'
+      preLoaderRoute: typeof ProtectedReservationsReservationIdEditRouteImport
+      parentRoute: typeof ProtectedReservationsReservationIdRoute
     }
   }
 }
 
+interface ProtectedReservationsReservationIdRouteChildren {
+  ProtectedReservationsReservationIdEditRoute: typeof ProtectedReservationsReservationIdEditRoute
+}
+
+const ProtectedReservationsReservationIdRouteChildren: ProtectedReservationsReservationIdRouteChildren =
+  {
+    ProtectedReservationsReservationIdEditRoute:
+      ProtectedReservationsReservationIdEditRoute,
+  }
+
+const ProtectedReservationsReservationIdRouteWithChildren =
+  ProtectedReservationsReservationIdRoute._addFileChildren(
+    ProtectedReservationsReservationIdRouteChildren,
+  )
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
+  PublicAboutRoute: PublicAboutRoute,
+  PublicDashboardRoute: PublicDashboardRoute,
+  PublicIndexRoute: PublicIndexRoute,
+  ProtectedReservationsReservationIdRoute:
+    ProtectedReservationsReservationIdRouteWithChildren,
+  ProtectedReservationsNewRoute: ProtectedReservationsNewRoute,
+  ProtectedReservationsIndexRoute: ProtectedReservationsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
